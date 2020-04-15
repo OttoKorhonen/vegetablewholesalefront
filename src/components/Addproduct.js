@@ -5,39 +5,50 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
-export default function Addproduct(props){
-    const[open, setOpen] = React.useState(false);
-    const[product, setProduct] = React.useState({name: '', cultivar:'', description: '',
-     producer: '', country: '', price: '', category: ''})
+export default function Addproduct(props) {
+    const [open, setOpen] = React.useState(false);
+    const[category, setCategory] = React.useState([]);
+    const [product, setProduct] = React.useState({
+        name: '', cultivar: '', description: '',
+        producer: '', country: '', price: '', category: ''
+    })
 
-    const handleClickOpen = () =>{
+    const handleClickOpen = () => {
         setOpen(true);
     }
 
-    const handleClose = () =>{
-        props.addProduct(product)
+    const handleClose = () => {
+        props.addProduct(product, category)
         setOpen(false);
     }
 
-    const handleCancel = () =>{
+    const handleCancel = () => {
         setOpen(false);
     }
 
-    const inputChanged = (event) =>{
-        setProduct({...product, [event.target.name]: event.target.value});
+    const handleChange = (event) => {
+        setCategory(event.target.value);
+      };
+
+    const inputChanged = (event) => {
+        setProduct({ ...product, [event.target.name]: event.target.value });
     }
 
-    return(
+    return (
         <div>
-<Button variant="outlined" color="primary" onClick={handleClickOpen}>
+            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
                 Add product
       </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Add product</DialogTitle>
                 <DialogContent>
 
-                <TextField
+                    <TextField
                         autoFocus
                         margin="dense"
                         id="name"
@@ -92,15 +103,19 @@ export default function Addproduct(props){
                         label="Price(€)"
                         fullWidth
                     />
-                     <TextField
-                        margin="dense"
-                        id="category"
-                        name="category"
-                        value={product.category.name}
-                        onChange={inputChanged}
-                        label="Category"
-                        fullWidth
-                    />
+                    <FormControl >
+                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={category}
+                            onChange={handleChange}
+                        >
+                            <MenuItem value={category}>Vihannes</MenuItem>
+                            <MenuItem value={category}>Hedelmä</MenuItem>
+                            <MenuItem value={category}>Marja</MenuItem>
+                        </Select>
+                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCancel} color="primary">

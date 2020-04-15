@@ -5,15 +5,22 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 export default function Editproduct(props){
     const[open, setOpen] = React.useState(false);
+    const[category, setCategory] = React.useState([]);
     const[product, setProduct] = React.useState({name: '', cultivar:'', description: '', producer: '', country: '', price: '', category: ''})
 
     const handleClickOpen = () =>{
+        setOpen(true);
         console.log(props.product);
+        console.log(props.category);
         setProduct({name: props.product.name, cultivar: props.product.cultivar, description: props.product.description, producer: props.product.producer,
-             country: props.product.country, price: props.product.price});
+             country: props.product.country, price: props.product.price, category: props.product.category.name});
     }
 
     const handleClose = () =>{
@@ -27,7 +34,13 @@ export default function Editproduct(props){
 
     const inputChanged = (event) =>{
         setProduct({...product, [event.target.name]: event.target.value});
+        setCategory({...category, [event.target.name]: event.target.value})
     }
+
+    const handleChange = (event) => {
+        setCategory(event.target.value);
+      };
+
     return(
         <div>
             <Button size="small" color="primary" onClick={handleClickOpen}>
@@ -92,15 +105,19 @@ export default function Editproduct(props){
                         label="Price(€)"
                         fullWidth
                     />
-                    <TextField
-                        margin="dense"
-                        id="category"
-                        name="category"
-                        value={product.category}
-                        onChange={inputChanged}
-                        label="Category"
-                        fullWidth
-                    />
+                    <FormControl >
+                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={product.category.name}
+                            onChange={handleChange}
+                        >
+                            <MenuItem value={product.category.name}>Vihannes</MenuItem>
+                            <MenuItem value={product.category.name}>Hedelmä</MenuItem>
+                            <MenuItem value={product.category.name}>Marja</MenuItem>
+                        </Select>
+                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCancel} color="primary">

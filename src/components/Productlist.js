@@ -16,9 +16,9 @@ export default function Productlist() {
     }, [])
 
     const getProducts = () => {
-        fetch('https://vegetablewholesale.herokuapp.com/api/products')
+        fetch('https://vegetablewholesale.herokuapp.com/products')
             .then(response => response.json())
-            .then(responseData => setProducts(responseData._embedded.products))
+            .then(data => setProducts(data))
             .catch(err => console.error(err))
     }
 
@@ -35,7 +35,7 @@ export default function Productlist() {
     }
 
     const addProduct = (product) => {
-        fetch('https://vegetablewholesale.herokuapp.com/api/products',
+        fetch('https://vegetablewholesale.herokuapp.com/products',
             {
                 method: 'POST',
                 headers: {
@@ -54,11 +54,11 @@ export default function Productlist() {
 
     const updateProduct = (link, product) =>{
         fetch(link, {
-            method: 'PUT',
+            method: 'GET',
             headers: {
                 'Content-Type':'application/json'
             },
-            body: JSON.stringify(product)
+            body: JSON.stringify(product),
         }
         )
         .then(_ => getProducts())
@@ -95,12 +95,12 @@ export default function Productlist() {
             accessor: 'country'
         },
         {
-            Header: 'Price',
+            Header: 'Price(€)',
             accessor: 'price'
         },
         {
             Header: 'Category',
-            accessor: 'category'
+            accessor: 'category.name'
         },
         {
             Cell: row => (<Editproduct product={row.original} updateProduct={updateProduct}/>)
@@ -112,7 +112,8 @@ export default function Productlist() {
 
     return (
         <div>
-            <Addproduct addproduct={addProduct}/>
+            <Addproduct addProduct={addProduct}/>
+            
             <ReactTable defaultPageSize={10} filterable={true}
                 data={products} columns={columns} />
                 <Snackbar

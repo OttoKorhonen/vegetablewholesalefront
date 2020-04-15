@@ -14,7 +14,6 @@ function App() {
           <Typography variant="h6">
             Vegetable wholesale product list
           </Typography>
-         
         </Toolbar>
       </AppBar>
      <Productlist/>
