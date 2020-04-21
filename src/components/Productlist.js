@@ -54,11 +54,13 @@ export default function Productlist() {
 
     const updateProduct = (link, product) =>{
         fetch(link, {
-            method: 'GET',
+            method: 'POST',//GET
             headers: {
-                'Content-Type':'application/json'
+               'Content-Type':'application/json',
+                'Accept':'application/json'
             },
-            body: JSON.stringify(product),
+            credentials: 'same-origin',
+            body: JSON.stringify(product)
         }
         )
         .then(_ => getProducts())
@@ -106,7 +108,7 @@ export default function Productlist() {
             Cell: row => (<Editproduct product={row.original} updateProduct={updateProduct}/>)
         },
         {
-            Cell: row => (<Button color='secondary' size='small' onClick={() => deleteProduct(row.original._links.self.href)}>Delete</Button>)
+            Cell: row => (<Button color='secondary' size='small' onClick={() => deleteProduct(row.original.data)}>Delete</Button>)//_links.self.href
         }
     ]
 

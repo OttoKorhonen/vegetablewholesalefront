@@ -6,14 +6,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import { NativeSelect } from '@material-ui/core';
 
 export default function Editproduct(props){
     const[open, setOpen] = React.useState(false);
     const[category, setCategory] = React.useState([]);
-    const[product, setProduct] = React.useState({name: '', cultivar:'', description: '', producer: '', country: '', price: '', category: ''})
+    const[product, setProduct] = React.useState({name: '', cultivar:'', description: '',
+     producer: '', country: '', price: '', category: ''})
 
     const handleClickOpen = () =>{
         setOpen(true);
@@ -24,7 +24,7 @@ export default function Editproduct(props){
     }
 
     const handleClose = () =>{
-        props.updateProduct(props.product._links.self.href.product)
+        props.updateProduct('https://vegetablewholesale.herokuapp.com/products/' + props.product.productId, props.product)//tähän pitää mahdollisesti laittaa jotain muuta
         setOpen(false);
     }
 
@@ -34,11 +34,12 @@ export default function Editproduct(props){
 
     const inputChanged = (event) =>{
         setProduct({...product, [event.target.name]: event.target.value});
-        setCategory({...category, [event.target.name]: event.target.value})
+        //setCategory({...category, [event.target.name]: event.target.value})
     }
 
     const handleChange = (event) => {
-        setCategory(event.target.value);
+        setCategory({...category, [category]: event.target.value,
+        });
       };
 
     return(
@@ -107,16 +108,20 @@ export default function Editproduct(props){
                     />
                     <FormControl >
                         <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
+                        <NativeSelect
+                            //labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={product.category.name}
                             onChange={handleChange}
+                            inputProps={{
+                                name: 'category'
+                              }}
                         >
-                            <MenuItem value={product.category.name}>Vihannes</MenuItem>
-                            <MenuItem value={product.category.name}>Hedelmä</MenuItem>
-                            <MenuItem value={product.category.name}>Marja</MenuItem>
-                        </Select>
+                            <option value={product.category.name}>Vihannes</option>
+                            <option value={product.category.name}>Hedelmä</option>
+                            <option value={product.category.name}>Marja</option>
+                            </NativeSelect>
+                        
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
@@ -124,7 +129,7 @@ export default function Editproduct(props){
                         Cancel
           </Button>
                     <Button onClick={handleClose} color="primary">
-                        Add
+                        Ok
           </Button>
                 </DialogActions>
             </Dialog>

@@ -6,16 +6,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import { NativeSelect } from '@material-ui/core';
+
 
 export default function Addproduct(props) {
     const [open, setOpen] = React.useState(false);
     const[category, setCategory] = React.useState([]);
     const [product, setProduct] = React.useState({
         name: '', cultivar: '', description: '',
-        producer: '', country: '', price: '', category: ''
+        producer: '', country: '', price: '', category:''
     })
 
     const handleClickOpen = () => {
@@ -104,17 +104,21 @@ export default function Addproduct(props) {
                         fullWidth
                     />
                     <FormControl >
-                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
+                        <InputLabel >Category</InputLabel>
+                        <NativeSelect
+                        
+                            //labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={category}
+                            value={product.category.name}
                             onChange={handleChange}
+                            inputProps={{
+                                name: 'category'
+                              }}
                         >
-                            <MenuItem value={category}>Vihannes</MenuItem>
-                            <MenuItem value={category}>Hedelmä</MenuItem>
-                            <MenuItem value={category}>Marja</MenuItem>
-                        </Select>
+                            <option value={product.category.name}>Vihannes</option>
+                            <option value={product.category.name}>Hedelmä</option>
+                            <option value={product.category.name}>Marja</option>
+                            </NativeSelect>
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
